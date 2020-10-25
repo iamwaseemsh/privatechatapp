@@ -105,4 +105,4 @@ io.on("connection",(socket)=>{
 
 
 // app.listen(process.env.PORT || 3000);
-server.listen(process.env.PORT)
+server.listen(process.env.PORT || 3000)
