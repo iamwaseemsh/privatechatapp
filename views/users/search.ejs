@@ -1,9 +1,16 @@
 
 <div class="main">
+    <h2>Search</h2>
+    <% if(locals.errorMessage!=null) {%>
+        <div class="error-message"><%=errorMessage %></div>
+        
+        <%}%>
     <form action="/search" method="POST">
+       <div class="form-item">
         <label for="">Search user by username</label>
-        <input type="text" name="username" value="">
-    <button type="submit">Search</button>
-    </form>
-    <a href="logout"><button>Logout</button></a>
+        <input placeholder="Type.." type="text" name="username" value="">
+    <button class="btn" type="submit">Search</button>
+    </div> 
+</form>
+    <a class="btn" href="logout"><button>Logout</button></a>
 </div>

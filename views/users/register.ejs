@@ -1,10 +1,11 @@
 
 
 <div class="main">
+    <h2>
+        Register
+    </h2>
     <form action="/register" method="POST">
-        <h2>
-            Register
-        </h2>
+       
         <div class="form-item">
             <label>Enter username</label>
             <input type="text" name="username">
@@ -16,15 +17,13 @@
         <div class="form-item">
             <label>Confirm password</label>
             <input type="password" name="password2" >
+            <button type="submit">Submit</button>
         </div>
-        
-        <button type="submit">Submit</button>
         
         
         </form>
-        <div>
-            <br>
-            Or
+        <div class="form-item">
+            <p>Already have an account?</p>
             <a href="/"><button>Signin</button></a>
         </div>
 </div>

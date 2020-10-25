@@ -8,17 +8,128 @@ justify-content: center;
 align-items: center;
 
 }
+.inner-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #eceffc;
+}
 .main{
     border: 1px solid black;
-width: 30%;
+width: 20%;
 height: auto;
-padding: 2rem;
+padding: 1rem;
+color: white;
 box-sizing: content-box;
-
+display: flex;
+flex-direction: column;
+align-items: center;
+background: rgba(0, 0, 0, 0.8);
+border-radius: 10px;
+box-shadow: 0 0.4px 0.4px rgba(128, 128, 128, 0.109),
+    0 1px 1px rgba(128, 128, 128, 0.155),
+    0 2.1px 2.1px rgba(128, 128, 128, 0.195),
+    0 4.4px 4.4px rgba(128, 128, 128, 0.241),
+    0 12px 12px rgba(128, 128, 128, 0.35);
 }
 
 .form-item{
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    margin-top: .5rem;
+    align-items: center;
+   width: 100%;
+}
+
+/* chat */
+.chat-container{
+    width: 90%;
+    display: grid;
+    height: auto;
+    grid-template-areas: 
+    "header"
+    "main-chat"
+    "chat-form";
+    grid-gap: 5px;
+    overflow: hidden;
+    max-width: 1100px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    background-color: aqua;
+    padding: 1rem;
+}
+.chat-header{
+    grid-area: header;
+    height: 5vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.chat-messages{
+    grid-area: main-chat;
+    width: 100%;
+    height: 60vh;
+}
+.chat-form-container{
+    grid-area: chat-form;
+    width: 100%;
+    height: 10vh;
+}
+.chat-messages{
+    padding: 30px;
+    max-height: 500px;
+    overflow-y: scroll;
+}
+
+.error-message{
+    color: red;
+}
+
+
+
+.chat-form-container{
+    overflow: hidden;
+}
+.chat-container form{
+    display: flex;
+}
+#chat-form-container input[type="text"]{
+    font-size: 16px;
+    padding: 5px;
+    height: 40px;
+    flex: 4;
+    
+}
+#chat-form-container button{
+    flex: 1;
+}
+
+.btn{
+    display: block;
+    width: 100%;
+}
+
+  
+
+.message{
+    background-color: #3949AB;
+    font-size: 16px;
+    padding: .5rem;
+    margin-top: .6rem;
+    width: 30%;
+    border-radius: 30px;
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+   align-items: center;
+   font-weight: bold;
+}
+.message-user{
+    font-size: 20px;
+    color: white;
+}
+.message-text{
+    
 }
