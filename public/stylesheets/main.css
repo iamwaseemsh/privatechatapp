@@ -1,0 +1,24 @@
+
+
+.layout-main{
+   
+    display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+
+}
+.main{
+    border: 1px solid black;
+width: 30%;
+height: auto;
+padding: 2rem;
+box-sizing: content-box;
+
+}
+
+.form-item{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
