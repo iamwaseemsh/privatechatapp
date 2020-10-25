@@ -27,7 +27,7 @@ router.post("/signin",async(req,res)=>{
         //    console.log(token);
         // res.cookie("userInfo",{username:req.body.username,token:getToken(user)})
         //    res.cookie("token",getToken(user))
-            res.render("users/search");
+            res.cookie("username",req.body.username).render("users/search");
           
         // res.render("users/search");
         }else{
