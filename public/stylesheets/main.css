@@ -195,7 +195,7 @@ background-color: #3f51be;
 @media screen and (max-width : 700px){
 
 .main{
-    width: 90vh;
+    width: 100vh;
     height: 90vh;
     display: flex;
     flex-direction: column;
@@ -203,9 +203,9 @@ background-color: #3f51be;
     align-items: center;
 }
 .chat-container{
-    width: 90%;
+    width: 100%;
     display: grid;
-    height: auto;
+    height: 100vh;
     grid-template-areas: 
     "header"
     "main-chat"
@@ -231,9 +231,10 @@ background-color: #3f51be;
     grid-area: main-chat;
 
     width: 100%;
-    height: 70vh;
-    padding-left: 30px;
-    
+    height: 80vh;
+    padding:0;
+    display: flex;
+    flex-direction: column;
     overflow-y: scroll;
 }
 .chat-form-container{
@@ -290,14 +291,16 @@ background-color: #3f51be;
     border-color: white;
 }
 .message{
-    width: 80%;
+    min-width: 200px;
    min-height: 50px;
     
     display: flex;
     flex-direction: row;
     justify-content: start;
     padding-left:20px ;
+    
 }
+
 .message-text{
     margin-left: 10px;
 }
