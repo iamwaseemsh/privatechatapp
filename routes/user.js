@@ -1,35 +1,17 @@
-const {getToken}=require("../util")
+const {getToken,userAuth}=require("../util")
 const express=require('express');
 const cookieParser = require('cookie-parser');
 const router=express.Router();
 const User=require("../models/user");
 const jwt=require("jsonwebtoken");
-
+const _=require("lodash")
 if(process.env.NODE_ENV!=="production"){
     require('dotenv').config()
 }
 const app2=express();
 app2.use(cookieParser());
-function isAuth(req,res,next){
-    const token=req.cookies.token;
-    if(token){
-        jwt.verify(token,process.env.JWT_SECRET,(err,decode)=>{
-            if(err){
-               return res.render("users/signin")
 
-            }
-            req.user=decode;
-            next();
-        return;
-        })
-        
-    }
-    else{
-        return res.render("users/signin")
-
-    }
-    }
-router.get("/",isAuth,async(req,res)=>{
+router.get("/",userAuth,async(req,res)=>{
 
     res.redirect("/search");
 });
@@ -47,16 +29,10 @@ router.post("/signin",async(req,res)=>{
         const user=await User.findOne({username:req.body.username,password:req.body.password});
     
         if(user){
-        //     const token=getToken(user);
-        //    console.log(token);
-        // res.cookie("userInfo",{username:req.body.username,token:getToken(user)})
-        //    res.cookie("token",getToken(user))
-        //console.log("Token is here" + getToken(user));
         res.cookie("token",getToken(user));
-        res.cookie("username",req.body.username);
-            res.redirect("/search");
+        res.cookie("username",_.lowerCase(req.body.username));
+        res.redirect("/search");
           
-        // res.render("users/search");
         }else{
             res.render("users/signin",{errorMessage:"Username or password invalid"})
         }
@@ -93,7 +69,6 @@ router.post("/register",async(req,res)=>{
    try {
     const newUser=await user.save();
 
-    //res.cookie("user",{username:req.body.username},{expires:new Date()+86000*1000})
 
  
     

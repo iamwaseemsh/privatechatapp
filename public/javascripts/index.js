@@ -27,7 +27,7 @@ if(messages.length){
       const p=document.createElement("p");
       p.innerText=" : " +messages[x].message;
       p.classList.add("message-text")
-      const para=document.createElement("p");
+      const para=document.createElement("pre");
       if(messages[x].user==getCurrentUser(document.cookie)){
           div.classList.add("sender-color")
           div.classList.add("message-right")

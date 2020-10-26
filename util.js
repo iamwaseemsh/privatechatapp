@@ -50,7 +50,26 @@ const chatAuth=(req,res,next)=>{
     }
 }
 
+function userAuth(req,res,next){
+    const token=req.cookies.token;
+    if(token){
+        jwt.verify(token,process.env.JWT_SECRET,(err,decode)=>{
+            if(err){
+               return res.render("users/signin")
+
+            }
+            req.user=decode;
+            next();
+        return;
+        })
+        
+    }
+    else{
+        return res.render("users/signin")
+
+    }
+    }
 
 
- module.exports= {getToken,chatAuth,searchAuth}
+ module.exports= {getToken,chatAuth,searchAuth,userAuth}
 

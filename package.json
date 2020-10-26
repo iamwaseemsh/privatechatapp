@@ -19,6 +19,7 @@
     "express": "^4.17.1",
     "express-ejs-layouts": "^2.5.0",
     "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.20",
     "mongoose": "^5.10.10",
     "socket.io": "^2.3.0"
   }

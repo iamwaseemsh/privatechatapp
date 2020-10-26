@@ -1,6 +1,7 @@
 
 <div class="main">
-    <h2>Search</h2>
+   
+    <h2 class="main-heading">Search</h2>
     <% if(locals.errorMessage!=null) {%>
         <div class="error-message"><%=errorMessage %></div>
         
@@ -11,11 +12,12 @@
         <br>
         <input placeholder="Type.." type="text" name="username" value="">
         <br>
-        <button class="btn" type="submit">Search</button>
+        <button class="primary-button2" type="submit">Search</button>
     </div> 
+    <div class="form-item">
+        <a href="logout"><button class="primary-button2">Logout</button></a>
+    </div>
 </form>
-<div class="form-item">
-    <a href="logout"><button class="btn">Logout</button></a>
-</div>
+
    
 </div>
