@@ -1,6 +1,7 @@
 if(process.env.NODE_ENV!=="production"){
     require('dotenv').config()
 }
+
 const cookieParser = require('cookie-parser');
 const express=require("express");
 const RoomChat = require('./models/roomChat');
@@ -15,6 +16,7 @@ const userRouter=require("./routes/user")
 const searchRoute=require("./routes/search");
 const chatRoute=require("./routes/chat");
 const { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } = require('constants');
+const { chatAuth } = require('./util');
 
 
 
@@ -26,7 +28,7 @@ app.use(expressLayouts);
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended:false}));
 
-var userData={username:"",roomId:""}
+
 
 mongoose.connect(process.env.DATABASE_URL,{useNewUrlParser:true,useUnifiedTopology:true});
 const db=mongoose.connection
@@ -36,35 +38,30 @@ db.once("open",()=>console.log("Connected with mongoose"))
 
 app.use("/",userRouter);
 app.use("/search",searchRoute);
-// app.use("/chat",chatRoute);
 
-app.get("/chat",async(req,res)=>{
-   userData.username=await req.query.username;
-   userData.roomId=await req.query.roomid;
+
+
+app.get("/chat",chatAuth,async(req,res)=>{
+
+    if(!(req.query.username)){
+    return res.redirect("/");
+    }
+  
   
    res.render("chats/chat")
     
 });
 
 io.on("connection",(socket)=>{
-    
-    // try {
-    //     const chat=await RoomChat.findOne({roomId:req.query.roomid});
-    // if(chat){
-    //    
-    // }
-    // } catch  {
-    //     console.log("errors");
-    // }
-    
-
-    
     socket.on("joinRoom",({currentUsername,roomid})=>{
         socket.join(roomid);
+        const uj={user:"Chatbot",message:`${currentUsername} has join the chat`}
+        socket.broadcast.to(roomid).emit("output",[uj])
         RoomChat.findOne({roomId:roomid},(err,data)=>{
             if(data){
                 const messages=data.messages;
-                io.to(roomid).emit("output",messages)
+                // io.to(roomid).emit("output",messages)
+                io.to(socket.id).emit("output",messages)
             }
         });
         console.log("User connected");
@@ -76,11 +73,11 @@ io.on("connection",(socket)=>{
             message:msg
         }
         if(chat){
-        //     console.log(chat.messages);
+      
           chat.messages.push(message);
-        //    RoomChat.updateOne({roomId:roomid},{$push:{}})
             chat.save();
-            io.to(roomid).emit("output",[message])
+          io.to(roomid).emit("output",[message])
+         
 
         }else{
             console.log("Here");
@@ -94,6 +91,8 @@ io.on("connection",(socket)=>{
 
     })
     socket.on("disconnect",()=>{
+        // const uj={user:"Chatbot",message:`User has left the chat`}
+        // socket.broadcast.to(roomid).emit("output",[uj])
         console.log("User disconnected");
     })
         

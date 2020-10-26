@@ -4,6 +4,10 @@
     <h2>
         Register
     </h2>
+    <% if(locals.errorMessage!=null) {%>
+        <div class="error-message"><%=errorMessage %></div>
+        
+        <%}%>
     <form action="/register" method="POST">
        
         <div class="form-item">
@@ -17,13 +21,14 @@
         <div class="form-item">
             <label>Confirm password</label>
             <input type="password" name="password2" >
-            <button type="submit">Submit</button>
+            <br>
+            <button class="btn2"type="submit">Submit</button>
         </div>
         
         
         </form>
         <div class="form-item">
-            <p>Already have an account?</p>
-            <a href="/"><button>Signin</button></a>
+           
+            <a class="primary-button" href="/">Already have an account?</a>
         </div>
 </div>

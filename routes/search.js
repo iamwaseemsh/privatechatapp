@@ -3,9 +3,29 @@ const router=express.Router();
 const Room=require("../models/room");
 const User=require("../models/user");
 
+const jwt=require("jsonwebtoken");
+const {getToken,searchAuth}=require("../util")
+// function searchAuth(req,res,next){
+//     const token=req.cookies.token;
+//     if(token){
+//         jwt.verify(token,process.env.JWT_SECRET,(err,decode)=>{
+//             if(err){
+//                return res.render("users/signin",{errorMessage:"Token is invalid"})
 
+//             }
+//             req.user=decode;
+//             next();
+//         return;
+//         })
+        
+//     }
+//     else{
+//         return res.render("users/signin")
+
+//     }
+//     }
+    
 router.post("/",async(req,res)=>{
-console.log(req.cookies.username);
 console.log(req.body.username);
 if(req.body.username==req.cookies.username){
     return res.render("users/search",{errorMessage:"In valid username"})
@@ -39,7 +59,7 @@ if(foundUser){
        
     } catch  {
         console.log("here");
-        res.send("catch")
+        res.redirect("/")
         
     }
 }
@@ -50,6 +70,10 @@ else{
 
 
 
+})
+
+router.get("/",searchAuth,(req,res)=>{
+    res.render("users/search")
 })
 
 function createRoom(currentUser,nextUser){

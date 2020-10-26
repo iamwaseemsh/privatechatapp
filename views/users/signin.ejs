@@ -1,5 +1,9 @@
 <div class="main">
     <h2>SignIn</h2>
+    <% if(locals.errorMessage!=null) {%>
+        <div class="error-message"><%=errorMessage %></div>
+        
+        <%}%>
 <form action="/signin" method="POST" >
 
     <div class="form-item">
@@ -20,8 +24,8 @@
   
 </form>
 <div class="form-item">
-    <p>Join now</p>
-    <a class="btn" href="/register"><button>Register</button></a>
+    <a class="primary-button" href="/register">Join now</a>
+
     
 </div>
 
