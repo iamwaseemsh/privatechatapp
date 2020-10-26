@@ -298,6 +298,7 @@ background-color: #3f51be;
     flex-direction: row;
     justify-content: start;
     padding-left:20px ;
+    align-self: flex-start;
     
 }
 
