@@ -291,14 +291,14 @@ background-color: #3f51be;
     border-color: white;
 }
 .message{
-    min-width: 200px;
+    width:90%;
    min-height: 50px;
     
     display: flex;
     flex-direction: row;
     justify-content: start;
     padding-left:20px ;
-    align-self: flex-start;
+    align-self: center;
     
 }
 
