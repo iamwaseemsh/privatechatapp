@@ -13,4 +13,4 @@ const roomSchema=new mongoose.Schema({
         required:true
     }
 });
-module.exports=mongoose.model("Room",roomSchema);
+module.exports=new mongoose.model("Room",roomSchema);

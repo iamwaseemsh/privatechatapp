@@ -4,9 +4,7 @@ if (process.env.NODE_ENV !== "production") {
 
 const cookieParser = require('cookie-parser');
 const express = require("express");
-const {
-    RoomChat
-} = require('./models/roomChat');
+const RoomChat= require('./models/roomChat');
 const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
@@ -41,7 +39,8 @@ app.use(bodyParser.urlencoded({
 
 mongoose.connect(process.env.DATABASE_URL, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useCreateIndex: true,
+    useUnifiedTopology:true
 });
 const db = mongoose.connection
 
@@ -65,7 +64,7 @@ io.on("connection", (socket) => {
         socket.broadcast.to(roomid).emit("output", [uj])
         RoomChat.findOne({
             roomId: roomid,
-            username: currentUsername
+            usernameData: currentUsername
         }, (err, data) => {
             if (err) {
                 console.log("err is " + err);
@@ -83,8 +82,7 @@ io.on("connection", (socket) => {
         msg
     }) => {
         const chat = await RoomChat.find({
-            roomId: roomid,
-            username:currentUsername
+            roomId: roomid
         });
         const message = {
             user: currentUsername,
@@ -92,7 +90,7 @@ io.on("connection", (socket) => {
         }
         
         if (chat.length > 0) {
-
+            
             chat[0].messages.push(message);
             chat[0].save();
 
@@ -102,32 +100,32 @@ io.on("connection", (socket) => {
 
 
         } else {
+            
             try {
                 const chat1 = new RoomChat({
-                    roomId: roomid,
-                    username: currentUsername,
+                    usernameData:currentUsername,
+                        roomId:roomid,
                     messages: [message]
-                })
-                const newChat = await chat1.save();
-
-
-            } catch {
-
+                });
+                
+                chat1.save();
+           
+            } catch(err) {
+                console.log("err 1 is " + err);
             }
-
-
+           
             try {
-                console.log(roomid);
-                const nun = roomid.replace(currentUsername, "");
-                console.log(nun.length);
+              
+              const nun = roomid.replace(currentUsername, "");
                 const chat2 = new RoomChat({
-                    roomId: roomid,
-                    username: nun,
+                    usernameData:nun,
+                        roomId:roomid         ,
                     messages: [message]
                 })
-                const newChat2 = await chat2.save();
-            } catch {
-
+                
+                chat2.save();
+            } catch(err) {
+                console.log("err 2 is " + err);
             }
 
             io.to(roomid).emit("output", [message])

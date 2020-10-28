@@ -20,7 +20,7 @@ document.getElementById("delete-chat-button").addEventListener("click", (e) => {
     e.preventDefault()
     var c = confirm("Are you sure?");
     if (c == true) {
-        window.location.href = `chat/delete/${currentUsername}`;
+        window.location.href = `chat/delete?username=${currentUsername}&roomid${roomid}`;
     } else {
         return
     }

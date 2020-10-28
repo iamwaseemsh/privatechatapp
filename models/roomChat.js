@@ -17,16 +17,21 @@ const messageSchema=new mongoose.Schema({
 
 
 const roomChatSchema=new mongoose.Schema({
-    roomId:{
-        type:String,
-        required:true
-    },
-    username:{
-        type:String,
-        required:true,
-    },
+
+        usernameData:{
+            type:String
+        },
+        roomId:{
+            type:String,
+          
+            
+        }
+
+    ,
     messages:[messageSchema],
   
 })
-const RoomChat=mongoose.model("RoomChat",roomChatSchema)
-module.exports={RoomChat,roomChatSchema};
+// roomChatSchema.plugin(require('mongoose-beautiful-unique-validation'));
+// const RoomChat=mongoose.model("RoomChat",roomChatSchema)
+// module.exports={RoomChat,roomChatSchema};
+module.exports=mongoose.model("RoomChat",roomChatSchema)
