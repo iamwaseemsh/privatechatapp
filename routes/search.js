@@ -1,89 +1,162 @@
-const express=require('express');
-const router=express.Router();
-const Room=require("../models/room");
-const User=require("../models/user");
+const express = require('express');
+const router = express.Router();
+const Room = require("../models/room");
+const User = require("../models/user");
+const _ = require("lodash");
+const jwt = require("jsonwebtoken");
+const {
+    getToken,
+    searchAuth
+} = require("../util");
+const user = require('../models/user');
 
-const jwt=require("jsonwebtoken");
-const {getToken,searchAuth}=require("../util")
-// function searchAuth(req,res,next){
-//     const token=req.cookies.token;
-//     if(token){
-//         jwt.verify(token,process.env.JWT_SECRET,(err,decode)=>{
-//             if(err){
-//                return res.render("users/signin",{errorMessage:"Token is invalid"})
 
-//             }
-//             req.user=decode;
-//             next();
-//         return;
-//         })
-        
-//     }
-//     else{
-//         return res.render("users/signin")
+router.post("/", async (req, res) => {
 
-//     }
-//     }
-    
-router.post("/",async(req,res)=>{
-console.log(req.body.username);
-if(req.body.username==req.cookies.username){
-    return res.render("users/search",{errorMessage:"In valid username"})
-}
-if(req.body.username==""){
-    return res.render("users/search",{errorMessage:"Username can't be empty"})
-}
-
-const foundUser=await User.findOne({username:req.body.username});
-
-if(foundUser){
-    const currentUser=req.cookies.username;
-    
-    const nextUser=req.body.username;
-    const roomId=createRoom(currentUser,nextUser);
-    
-    try {
-        const room=await Room.findOne({roomId:roomId});
-        if(!room){
-            const room=new Room({
-                user1:currentUser,
-                user2:nextUser,
-                roomId:roomId
-            })
-            const newRoom=await room.save();
-            
-         res.redirect(`/chat?username=${nextUser}&roomid=${roomId}`);
-        }else{
-            res.redirect(`/chat?username=${nextUser}&roomid=${roomId}`);
-        }
-       
-    } catch  {
-        console.log("here");
-        res.redirect("/")
-        
+    const data = await Room.find({
+        $or: [{
+            user1: req.cookies.username
+        }, {
+            user2: req.cookies.username
+        }]
+    });
+    if (data) {
+        var contacts = data.map((contact) => {
+            var c = "";
+            if (contact.user1 == req.cookies.username) {
+                c = contact.user2
+            } else {
+                c = contact.user1
+            }
+            return {
+                other: c,
+                roomId: contact.roomId
+            }
+        })
     }
-}
-else{
-    return res.render("users/search",{errorMessage:"Username not found"})
-}
+
+    if (req.body.username.toLowerCase() == req.cookies.username) {
+
+        if (contacts) {
+            return res.render("users/search", {
+                errorMessage: "In valid username",
+                contacts: contacts
+            })
+        } else {
+            return res.render("users/search", {
+                errorMessage: "In valid username"
+            })
+        }
+
+    }
+    if (req.body.username.toLowerCase() == "") {
+        if (contacts) {
+            return res.render("users/search", {
+                errorMessage: "Username can't be empty",
+                contacts: contacts
+            })
+        } else {
+            return res.render("users/search", {
+                errorMessage: "Username can't be empty"
+            })
+        }
+
+    }
+
+    const foundUser = await User.findOne({
+        username: req.body.username.toLowerCase()
+    });
+    if (foundUser) {
+        const currentUser = req.cookies.username;
+        const nextUser = req.body.username.toLowerCase();
+        const roomId = createRoom(currentUser, nextUser);
+        try {
+            const room = await Room.findOne({
+                roomId: roomId
+            });
+            if (!room) {
+                const room = new Room({
+                    user1: currentUser,
+                    user2: nextUser,
+                    roomId: roomId
+                });
+
+                const newRoom = await room.save();
+
+                res.redirect(`/chat?username=${nextUser}&roomid=${roomId}`);
+            } else {
+                res.redirect(`/chat?username=${nextUser}&roomid=${roomId}`);
+            }
+
+        } catch {
+            res.redirect("/")
+
+        }
+    } else {
+
+        if (contacts) {
+            res.render("users/search", {
+                errorMessage: "Username not found",
+                contacts: contacts
+            });
+        } else {
+            res.render("users/search", {
+                errorMessage: "Username not found"
+            })
+        }
+
+
+    }
 
 
 
 
 })
 
-router.get("/",searchAuth,(req,res)=>{
-    res.render("users/search")
+router.get("/", searchAuth, async (req, res) => {
+
+    const data = await Room.find({
+        $or: [{
+            user1: req.cookies.username
+        }, {
+            user2: req.cookies.username
+        }]
+    });
+
+
+    if (data) {
+        var contacts = data.map((contact) => {
+            var c = "";
+            if (contact.user1 == req.cookies.username) {
+                c = contact.user2
+            } else {
+                c = contact.user1
+            }
+            return {
+                other: c,
+                roomId: contact.roomId
+            }
+        })
+        res.render("users/search", {
+            contacts: contacts
+        });
+
+    } else {
+        res.render("users/search")
+    }
+
 })
 
-function createRoom(currentUser,nextUser){
-    var roomId="";
-    if(currentUser>nextUser){
-        roomId=nextUser+currentUser;
-    }else{
-        roomId=currentUser+nextUser;
+
+
+function createRoom(currentUser, nextUser) {
+    var roomId = "";
+    if (currentUser > nextUser) {
+        roomId = nextUser + currentUser;
+    } else {
+        roomId = currentUser + nextUser;
     }
     return roomId;
 }
 
-module.exports=router;
+module.exports = router;

@@ -1,5 +1,8 @@
 const mongoose=require("mongoose");
 
+const {roomChatSchema}=require("./roomChat")
+
+
 const userSchema=new mongoose.Schema({
     username:{
         type:String,

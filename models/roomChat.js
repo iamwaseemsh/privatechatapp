@@ -1,5 +1,5 @@
 const mongoose=require("mongoose");
-// const Message=require("./message");
+
 
 const messageSchema=new mongoose.Schema({
     user:{
@@ -21,6 +21,12 @@ const roomChatSchema=new mongoose.Schema({
         type:String,
         required:true
     },
+    username:{
+        type:String,
+        required:true,
+    },
     messages:[messageSchema],
+  
 })
-module.exports=mongoose.model("RoomChat",roomChatSchema);
+const RoomChat=mongoose.model("RoomChat",roomChatSchema)
+module.exports={RoomChat,roomChatSchema};

@@ -1,23 +1,35 @@
-
 <div class="main">
-   
+
     <h2 class="main-heading">Search</h2>
     <% if(locals.errorMessage!=null) {%>
-        <div class="error-message"><%=errorMessage %></div>
-        
-        <%}%>
+    <div class="error-message"><%=errorMessage %></div>
+
+    <%}%>
     <form action="/search" method="POST">
        <div class="form-item">
         <label for="">Search user by username</label>
         <br>
         <input placeholder="Type.." type="text" name="username" value="">
         <br>
-        <button class="primary-button2" type="submit">Search</button>
+        <button class="button-primary" type="submit">Search</button>
     </div> 
-    <div class="form-item">
-        <a href="logout"><button class="primary-button2">Logout</button></a>
-    </div>
+    
 </form>
 
-   
+<div class="form-item">
+    <a  href="/logout"><button class="button-primary">Logout</button></a>
+</div>
+<% typeof contacts=='undefined'?contacts="":contacts%>
+    <% if(contacts.length>0){ %>
+    <div class="contact-bar">
+        <h4>Contacts</h4>
+
+        <% contacts.forEach(function(contact){ %>
+        <a class="contact" href="/chat?username=<%=contact.other%>&roomid=<%=contact.roomId%>"><%=contact.other%></a>
+        <%})%>
+
+    </div>
+    <%}%>
+
+
 </div>
