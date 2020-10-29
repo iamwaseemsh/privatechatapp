@@ -52,30 +52,36 @@ app.use("/search", searchRoute);
 app.use("/chat", chatRoute)
 
 io.on("connection", (socket) => {
-    socket.on("joinRoom", ({
+    socket.on("joinRoom",async ({
         currentUsername,
         roomid
     }) => {
+        
         socket.join(roomid);
         const uj = {
             user: "Chatbot",
             message: `${currentUsername} has join the chat`
         }
-        socket.broadcast.to(roomid).emit("output", [uj])
+        socket.broadcast.to(roomid).emit("output", [uj]);
+
         RoomChat.findOne({
-            roomId: roomid,
-            usernameData: currentUsername
+           roomId:roomid ,
+           usernameData:currentUsername
         }, (err, data) => {
+         
             if (err) {
                 console.log("err is " + err);
             }
             if (data) {
                 const messages = data.messages;
-                io.to(socket.id).emit("output", messages)
+                //
+                console.log(data.usernameData);
+             io.to(socket.id).emit("output", messages)
             }
         });
         console.log("User connected");
     });
+
     socket.on("message", async ({
         currentUsername,
         roomid,
@@ -88,8 +94,8 @@ io.on("connection", (socket) => {
             user: currentUsername,
             message: msg
         }
-        
-        if (chat.length > 0) {
+      
+         if (chat.length>0) {
             
             chat[0].messages.push(message);
             chat[0].save();
