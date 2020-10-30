@@ -30,26 +30,27 @@ socket.on("message", message => {
     outputMessage(message);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 })
-// socket.on("online",users=>{
-//    console.log(users);
-//     const status=document.querySelector(".status");
-//     if(users){
+socket.on("online",users=>{
+   console.log(users);
+    const status=document.querySelector(".status");
+    if(users){
        
-//         users.forEach(function(user){
-            
-//             if(user.username==username){
-//                 status.innerHTML="online";
+        for(var x=0;x < users.length;x++){
+            if(users[x].username==username){
+                status.innerHTML="online";
+                break;
+            }else{
+                status.innerHTML="";
+            }
+        }
+    
+    }
 
-//             }else{
-//                 status.innerHTML="offline";
-//             }
-//         })
-//     }
-
-// })
+})
 
 socket.on("output", (messages) => {
     
+    console.log(moment().format('MMM Do,h:mm a'));
     if (messages.length) {
         
         for (var x = 0; x < messages.length; x++) {
@@ -97,14 +98,18 @@ chatForm.addEventListener("submit", (e) => {
     if (!msg) {
         return false;
     }
+    const time=moment().format('MMM Do,h:mm a');
     socket.emit("message", {
         currentUsername,
         roomid,
-        msg
+        msg,
+        time
+        
     });
     e.target.elements.message.value = "";
     e.target.elements.message.focus();
 })
+
 
 
 function getCurrentUser(cookie) {

@@ -78,8 +78,8 @@ io.on("connection", (socket) => {
                 console.log("err is " + err);
             }
             if (data) {
-                // const users=userJoin(socket.id,currentUsername,roomid);
-                // io.to(roomid).emit("online",users);
+                const users=userJoin(socket.id,currentUsername,roomid);
+                io.to(roomid).emit("online",users);
                 const messages = data.messages;
                 io.to(socket.id).emit("output", messages)     
             }else{
@@ -92,7 +92,8 @@ io.on("connection", (socket) => {
     socket.on("message", async ({
         currentUsername,
         roomid,
-        msg
+        msg,
+        time
     }) => {
         const chat = await RoomChat.find({
             roomId: roomid
@@ -100,7 +101,7 @@ io.on("connection", (socket) => {
         const message = {
             user: currentUsername,
             message: msg,
-            time:`[${moment().format('MMM Do,h:mm a')}]`
+            time:`[${time}]`
         }
       
          if (chat.length>0) {
@@ -147,19 +148,16 @@ io.on("connection", (socket) => {
 
     })
     socket.on("disconnect", () => {
-    //     const user=getUser(socket.id);
-    //   const newUsers=  userLeave(socket.id)
-    //  console.log("new users are", user);
-    //  const uj2 = {
-    //     user: "Chatbot",
-    //     message: ` is online now`,
-    //     time:`[${moment().format('MMM Do,h:mm a')}]`
-    // }
-    // socket.broadcast.to(user.roomid).emit("output", [uj2]);
-    //  if(newUsers){
-    //     io.to(user.roomid).emit("online", {newUsers});
-    //     //  io.to(roomid).emit("online",users);
-    //  }
+        const user=getUser(socket.id);
+        const newUsers=  userLeave(socket.id)
+     
+       
+
+     if(newUsers.length>0){
+        
+       io.to(user[0].roomid).emit("online",newUsers);
+      
+     }
       
         console.log("User disconnected");
     });

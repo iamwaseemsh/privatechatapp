@@ -11,7 +11,7 @@ function userJoin(id,username,roomid){
     
 function userLeave(id){
     users=users.filter(user=>user.id!=id);
-   
+   console.log("user left are",users);
     return users;
     
 }
