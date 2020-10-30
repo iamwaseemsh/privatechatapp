@@ -37,10 +37,12 @@ socket.on("online",users=>{
        
         for(var x=0;x < users.length;x++){
             if(users[x].username==username){
-                status.innerHTML="online";
+                status.innerHTML="Connected";
+                
                 break;
             }else{
-                status.innerHTML="";
+                
+                status.innerHTML="Not connected";
             }
         }
     

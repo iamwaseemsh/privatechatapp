@@ -153,7 +153,7 @@ io.on("connection", (socket) => {
      
        
 
-     if(newUsers.length>0){
+     if(newUsers.length>0&&user.length>0){
         
        io.to(user[0].roomid).emit("online",newUsers);
       

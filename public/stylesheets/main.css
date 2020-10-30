@@ -150,8 +150,14 @@ box-shadow: 0 0.4px 0.4px rgba(128, 128, 128, 0.109),
 }
 
 .status{
-    color: green;
     font-weight: bold;
+    color: green;
+}
+.status-green{
+color: green;
+}
+.status-red{
+color: red;
 }
 
 .chat-form-container{
