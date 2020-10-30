@@ -1,22 +1,34 @@
 var users=[];
-function userJoin(id,username,room){
-    const user={id,username,room};
-    users.push(user);
+function userJoin(id,username,roomid){
+    
+    users.push({id,username,roomid});
+    console.log("Join users" , users);
+    return users;
+
+}
+
+
+    
+function userLeave(id){
+    users=users.filter(user=>user.id!=id);
+   
+    return users;
+    
+}
+
+function getUserByUsername(username){
+   const user=users.filter(user=>username==username);
+   return user;
+}
+function getUser(id){
+    
+    const user=users.filter(user=>user.id==id)
+    
     return user;
-
-}
-
-function getCurrentUser(username){
-    return users.find(user=>user.username===username);
-}
-function userLeave(username){
-    const index=users.findIndex(user=>user.username===username);
-    if(index!==-1){
-        return users.splice(index,1)[0];
-    }
 }
 module.exports={
     userJoin,
-    getCurrentUser,
-    userLeave
+    userLeave,
+    getUser,
+    getUserByUsername
 }

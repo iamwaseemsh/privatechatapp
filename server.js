@@ -1,7 +1,7 @@
 if (process.env.NODE_ENV !== "production") {
     require('dotenv').config()
 }
-
+const {userJoin,getUser,userLeave,getUserByUsername}=require("./users");
 const cookieParser = require('cookie-parser');
 const express = require("express");
 const RoomChat= require('./models/roomChat');
@@ -56,6 +56,8 @@ io.on("connection", (socket) => {
         currentUsername,
         roomid
     }) => {
+
+        // const users=userJoin(socket.id,currentUsername,roomid);
         
         socket.join(roomid);
         const uj = {
@@ -63,7 +65,9 @@ io.on("connection", (socket) => {
             message: `${currentUsername} has join the chat`
         }
         socket.broadcast.to(roomid).emit("output", [uj]);
-
+     
+  
+       
         RoomChat.findOne({
            roomId:roomid ,
            usernameData:currentUsername
@@ -74,9 +78,9 @@ io.on("connection", (socket) => {
             }
             if (data) {
                 const messages = data.messages;
-                //
-                console.log(data.usernameData);
-             io.to(socket.id).emit("output", messages)
+                io.to(socket.id).emit("output", messages)     
+            }else{
+                
             }
         });
         console.log("User connected");
@@ -139,9 +143,12 @@ io.on("connection", (socket) => {
 
     })
     socket.on("disconnect", () => {
-
+    //     const user=getUser(socket.id);
+    //   const newUser=  userLeave(socket.id)
+     
+    //   io.to(user.roomid).emit("online", newUser);
         console.log("User disconnected");
-    })
+    });
 
 })
 

@@ -1,10 +1,12 @@
 <div class="chat-container">
     <header class="chat-header">
-        <h1 class="chat-header-text"><%=hhh%></h1>
+        <h2 class="chat-header-text"><%=hhh%>  </h2>
+         
+         <!-- <h5 class="status"></h5>></h5> -->
         <div style="display: flex;">
-            <a href="/logout"><button class="btn2">Logout</button></a>
-            <a href="/search"><button class="btn2">Search</button></a>
-            <a id="delete-chat-button" href=""><button class="btn2">Delete</button></a>
+            <a href="/logout"><button class="chat-button">Logout</button></a>
+            <a href="/search"><button class="chat-button">Search</button></a>
+            <a id="delete-chat-button" href=""><button class="chat-button">Delete</button></a>
 
         </div>
 
@@ -16,8 +18,8 @@
     </div>
     <div id="chat-form-container">
         <form id="chat-form">
-            <input type="text" id="message" placeholder="Enter message" required autocomplete="off">
-            <button class="btn">Send</button>
+            <input type="text" id="message" class="type-message" placeholder="Enter message" required autocomplete="off">
+            <button >Send</button>
         </form>
 
     </div>
@@ -33,4 +35,4 @@ crossorigin="anonymous"
 ></script> -->
 <script src="javascripts/qs.js"></script>
 <script src="/socket.io/socket.io.js" defer></script>
-<script defer src="javascripts/index.js"></script>
+<script defer type ="text/javascript" src="javascripts/index.js"></script>

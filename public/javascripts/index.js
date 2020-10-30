@@ -30,7 +30,24 @@ socket.on("message", message => {
     outputMessage(message);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 })
+socket.on("online",users=>{
+    
+    var status=document.querySelector(".status");
+    status.innerHTML="offline";
+    if(users){
+       
+        users.forEach(function(user){
+           console.log(user);
+            if(user.username==username){
+                status.innerHTML="online";
 
+            }else{
+                status.innerHTML="offline";
+            }
+        })
+    }
+
+})
 
 socket.on("output", (messages) => {
     
