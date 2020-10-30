@@ -11,7 +11,7 @@ const io = require("socket.io")(server);
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const expressLayouts = require('express-ejs-layouts');
-
+const moment = require("moment");
 const userRouter = require("./routes/user")
 const searchRoute = require("./routes/search");
 const chatRoute = require("./routes/chat");
@@ -57,12 +57,13 @@ io.on("connection", (socket) => {
         roomid
     }) => {
 
-        // const users=userJoin(socket.id,currentUsername,roomid);
+       
         
         socket.join(roomid);
         const uj = {
             user: "Chatbot",
-            message: `${currentUsername} has join the chat`
+            message: `${currentUsername} is online now`,
+            time:`[${moment().format('MMM Do,h:mm a')}]`
         }
         socket.broadcast.to(roomid).emit("output", [uj]);
      
@@ -77,6 +78,8 @@ io.on("connection", (socket) => {
                 console.log("err is " + err);
             }
             if (data) {
+                // const users=userJoin(socket.id,currentUsername,roomid);
+                // io.to(roomid).emit("online",users);
                 const messages = data.messages;
                 io.to(socket.id).emit("output", messages)     
             }else{
@@ -96,7 +99,8 @@ io.on("connection", (socket) => {
         });
         const message = {
             user: currentUsername,
-            message: msg
+            message: msg,
+            time:`[${moment().format('MMM Do,h:mm a')}]`
         }
       
          if (chat.length>0) {
@@ -144,9 +148,19 @@ io.on("connection", (socket) => {
     })
     socket.on("disconnect", () => {
     //     const user=getUser(socket.id);
-    //   const newUser=  userLeave(socket.id)
-     
-    //   io.to(user.roomid).emit("online", newUser);
+    //   const newUsers=  userLeave(socket.id)
+    //  console.log("new users are", user);
+    //  const uj2 = {
+    //     user: "Chatbot",
+    //     message: ` is online now`,
+    //     time:`[${moment().format('MMM Do,h:mm a')}]`
+    // }
+    // socket.broadcast.to(user.roomid).emit("output", [uj2]);
+    //  if(newUsers){
+    //     io.to(user.roomid).emit("online", {newUsers});
+    //     //  io.to(roomid).emit("online",users);
+    //  }
+      
         console.log("User disconnected");
     });
 

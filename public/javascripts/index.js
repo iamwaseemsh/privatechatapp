@@ -30,31 +30,33 @@ socket.on("message", message => {
     outputMessage(message);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 })
-socket.on("online",users=>{
-    
-    var status=document.querySelector(".status");
-    status.innerHTML="offline";
-    if(users){
+// socket.on("online",users=>{
+//    console.log(users);
+//     const status=document.querySelector(".status");
+//     if(users){
        
-        users.forEach(function(user){
-           console.log(user);
-            if(user.username==username){
-                status.innerHTML="online";
+//         users.forEach(function(user){
+            
+//             if(user.username==username){
+//                 status.innerHTML="online";
 
-            }else{
-                status.innerHTML="offline";
-            }
-        })
-    }
+//             }else{
+//                 status.innerHTML="offline";
+//             }
+//         })
+//     }
 
-})
+// })
 
 socket.on("output", (messages) => {
     
     if (messages.length) {
+        
         for (var x = 0; x < messages.length; x++) {
             const div = document.createElement("div");
-
+            const time=document.createElement("h6")
+            time.classList.add("message-time");
+            time.innerText=messages[x].time;
             div.classList.add('message')
             const p = document.createElement("p");
 
@@ -75,7 +77,9 @@ socket.on("output", (messages) => {
 
 
             p.prepend(para)
+            p.append(time)
             div.append(p);
+            
             document.querySelector(".chat-messages").append(div)
 
 
