@@ -41,25 +41,32 @@ box-shadow: 0 0.4px 0.4px rgba(128, 128, 128, 0.109),
 }
 
 .contact-bar{
-    min-height: 100px;
-    max-height: 250px;
+    margin-top: 10px;
+    min-height: 160px;
+    max-height: 230px;
     overflow-y: auto;
     display: flex;
+    
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    
+  
 }
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+
 .contact{
     text-decoration: none;
     color: white;
     width: 150px;
     height: 20px;
-    overflow-x: hidden;
+    
     border-radius: 10px;
     border: 1px solid white;
     padding: 5px;
-   margin-top: 5px;
+   margin-bottom: 5px;
 }
 .contact:hover{
     color:darkorange;
