@@ -109,6 +109,16 @@ box-shadow: 0 0.4px 0.4px rgba(128, 128, 128, 0.109),
    
     
 }
+.online-status{
+    border: 3px solid rgb(16, 230, 16);
+
+   
+    
+}
+.online-status-hide{
+    display: inline;
+}
+
 #chat-form{
     width: 80%;
     margin: 0 auto;

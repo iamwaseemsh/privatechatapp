@@ -31,18 +31,23 @@ socket.on("message", message => {
     chatMessages.scrollTop = chatMessages.scrollHeight;
 })
 socket.on("online",users=>{
-   console.log(users);
+   
     const status=document.querySelector(".status");
-    if(users){
+    
+
+    
+    status.innerHTML="Offline";
+    if(users&&users[0].roomid!=""){
        
+        
         for(var x=0;x < users.length;x++){
             if(users[x].username==username){
-                status.innerHTML="Connected";
+                status.innerHTML="Online";
                 
                 break;
             }else{
                 
-                status.innerHTML="Not connected";
+                status.innerHTML="Offline";
             }
         }
     
@@ -50,10 +55,12 @@ socket.on("online",users=>{
 
 })
 
+
 socket.on("output", (messages) => {
     
     console.log(moment().format('MMM Do,h:mm a'));
     if (messages.length) {
+        
         
         for (var x = 0; x < messages.length; x++) {
             const div = document.createElement("div");

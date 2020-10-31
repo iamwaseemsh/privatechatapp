@@ -56,17 +56,26 @@ io.on("connection", (socket) => {
         currentUsername,
         roomid
     }) => {
+        const users=userJoin(socket.id,currentUsername,roomid);
 
+        io.emit("searchonline",users)
+        io.emit("online",users)
+        io.to(roomid).emit("online",users);
+        // if(roomid==""){
+        //     const users=userJoin(socket.id,currentUsername,roomid);
+            
+        // }
+        if(roomid!=""){
+            socket.join(roomid);
+     
        
-        
-        socket.join(roomid);
         const uj = {
             user: "Chatbot",
             message: `${currentUsername} is online now`,
             time:`[${moment().format('MMM Do,h:mm a')}]`
         }
         socket.broadcast.to(roomid).emit("output", [uj]);
-     
+   
   
        
         RoomChat.findOne({
@@ -86,8 +95,10 @@ io.on("connection", (socket) => {
                 
             }
         });
+    }
         console.log("User connected");
     });
+
 
     socket.on("message", async ({
         currentUsername,
@@ -154,7 +165,11 @@ io.on("connection", (socket) => {
        
 
      if(newUsers.length>0&&user.length>0){
-        
+        if(user[0].roomid==""&&newUsers.length>0&&user.length>0){
+           
+        }
+        io.emit("searchonline",newUsers)
+        io.emit("online",newUsers)
        io.to(user[0].roomid).emit("online",newUsers);
       
      }
